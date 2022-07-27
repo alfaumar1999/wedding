@@ -1,0 +1,59 @@
+{% extends 'user/layout1.html'%}
+{% block title%} {{session['user']}} {% endblock %}
+
+{% block statement %}
+    <p class="display-4 color1">Welcome, {{session['user']}} </p>
+    <p class="lead color2">
+        We would like to hear from you. Please fill the form let us know your thoughts..
+    </p>
+    {% set msg = get_flashed_messages(with_categories=True)%}
+    {% if msg %}
+    {% for i in msg %}
+    {% if i[0] == 'error'%}
+    <p class="alert alert-danger">{{i[1]}}</p>
+    {% else %}
+    <p class="alert alert-success">{{i[1]}}</p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="bg-dark col-7 p-3">
+        {% include "user/nav.html" %}
+        
+    </div>
+    <div class="d-flex btn-group">
+        <a href="/logout" class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">Log out</a>
+    </div>
+{% endblock %}
+
+{% block form %}
+<h3>Please Select what you are buying</h3>
+
+
+<form action="/asoebi" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<table class="table table-striped table-primary">
+    <tr>
+        <th>S/N</th>
+        <th>UNIFORM</th>
+        <th>CHOOSE</th>
+        <th>PRICE</th>
+        
+    </tr>
+
+
+    {% for u in uni %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        
+        <td>{{ u.uni_name }}</td>
+
+        <td> <input type="checkbox" name="uniform" value="{{ u.uni_id }}"></td>
+    
+        <td> &#8358;{{ "{:,.2f}".format(u.uni_price) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<button class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">BUY</button>
+</div>
+</form>
+{% endblock%}

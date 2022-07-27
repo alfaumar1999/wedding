@@ -1,0 +1,66 @@
+{% extends 'user/layout1.html'%}
+{% block title%} {{session['user']}} {% endblock %}
+
+{% block statement %}
+    <p class="display-4 color1">Welcome, {{session['user']}} </p>
+    <p class="lead color2">
+        We would like to hear from you. Please fill the form let us know your thoughts..
+    </p>
+    {% set msg = get_flashed_messages(with_categories=True)%}
+    {% if msg %}
+    {% for i in msg %}
+    {% if i[0] == 'error'%}
+    <p class="alert alert-danger">{{i[1]}}</p>
+    {% else %}
+    <p class="alert alert-success">{{i[1]}}</p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="bg-dark col-7 p-3">
+        {% include "user/nav.html" %}
+        
+    </div>
+    <div class="d-flex btn-group">
+        <a href="/logout" class="btn btn-lg color3 d-inline-block" style="border:2px solid #9b5c32;">Log out</a>
+    </div>
+{% endblock %}
+
+{% block form %}
+
+<h1>VIEW HOTEL SUGGESTIONS</h1>
+<!-- <div class="row">
+    {% if rsp_json.get('status') == 1 %}
+    {% for m in rsp_json['message'] %}
+    <div class="col">
+        <img src="{{m ['image']}}" alt="hotel" class="img-fluid" >
+        <h4>{{m['contact']}}</h4>
+    </div>
+    {% endfor %}
+</div>
+{% endif %} -->
+<table class="table table-striped table-success">
+    <tr>
+    <th>S/N</th>
+    <th>LOCATION</th>
+    <th>IMAGES</th>
+</tr>
+<tr>
+    {% for m in rsp_json['message'] %}
+    <td>{{ loop.index }}</td>
+    
+    <td>
+        {{m['contact']}}
+    </td>
+    <td>
+        <img src="{{m ['image']}}" alt="hotel" class="img-thumbnail" > 
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+    <p>{{ rsp_json}}</p>
+<button class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">UPLOAD</button>
+        </div>
+    </form>
+</div>
+{% endblock%}

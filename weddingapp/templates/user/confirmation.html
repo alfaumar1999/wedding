@@ -1,0 +1,65 @@
+{% extends 'user/layout1.html'%}
+{% block title%} {{session['user']}} {% endblock %}
+
+{% block statement %}
+    <p class="display-4 color1">Welcome, {{session['user']}} </p>
+    <p class="lead color2">
+        We would like to hear from you. Please fill the form let us know your thoughts..
+    </p>
+    {% set msg = get_flashed_messages(with_categories=True)%}
+    {% if msg %}
+    {% for i in msg %}
+    {% if i[0] == 'error'%}
+    <p class="alert alert-danger">{{i[1]}}</p>
+    {% else %}
+    <p class="alert alert-success">{{i[1]}}</p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="bg-dark col-7 p-3">
+        {% include "user/nav.html" %}
+        
+    </div>
+    <div class="d-flex btn-group">
+        <a href="/logout" class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">Log out</a>
+    </div>
+{% endblock %}
+
+{% block form %}
+<h3>ARE YOU SURE U WANT TO BUY THESE ITEMS</h3>
+<h4> your ttransaction ref is {{ session.get('reference')}}</h4>
+
+
+<form action="" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<table class="table table-striped table-primary" style="color: red;">
+    <tr>
+        <th>S/N</th>
+        <th>UNIFORM</th>
+        
+        <th>PRICE</th>
+        
+    </tr>
+
+
+    {% for orders,details,uniform in deets %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        
+        <td> {{ uniform.uni_name }}</td>
+
+    
+        <td> {{ details.det_itemprice }} </td>
+    </tr>
+    
+    {% endfor %}
+
+    <tr>
+        <td>TOTAL</td>
+        <td colspan="2">{{ total }}</td>
+    </tr>
+</table>
+<button class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">CONFIRM PAYMENT</button>
+</div>
+</form>
+{% endblock%}

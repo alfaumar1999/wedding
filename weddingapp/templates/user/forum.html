@@ -1,0 +1,69 @@
+{% extends 'user/layout1.html'%}
+{% block title%} Forum {% endblock %}
+
+{% block statement%}
+    <h1 class="display-3 color1">Mary & John's</h1>
+    <h1 class="display-4 color2 mb-3">Wedding invitation</h1>                
+    <p class="lead color2">
+        WHere would you want us to celebrate our honeymoon?
+    </p>
+    <p>
+
+    </p>
+    <h1 class="display-4 color1 my-3">Login form</h1>
+{% endblock %}
+
+
+{% block form %}
+<form action="" method="post">
+<div class="p-3 mt-5"> 
+    <label for="">Share Your Thoughts</label> 
+    <textarea class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;" name="comment" id="comment" cols="40" rows="3"></textarea>
+    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token()}}">
+    </div><br>
+    <div>
+        <p id="loader"></p>
+    <button type="button" id="btn" class="btn btn-lg color3 d-inline-block" style="border:2px solid #BA68C8;">Suggestion</button>   
+</div>
+</form>
+<div class="">
+    <p id="ps"></p>
+</div>
+{% endblock %}
+
+{% block custom_scripts%}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#btn').click(function(){
+                var content = $('#comment').val()
+                var csrf = $('#csrf_token').val()
+                //data2get = 'suggestion='+content+'&address='+'Lagos' 
+                // make ajax call to the route
+                data2get = {'suggestion':content, 'csrf_token':csrf}
+                $.ajax({ 
+                         url:'/send_forum',
+                         data:data2get,
+                         //type:'get',
+                         type:'post',
+                         dataType:'text',
+                         beforeSend:function(){
+                           $('#loader').html('<img src="static/images/wedding2.jpg" >')
+                           $('#btn').html()
+                         },
+                         
+                         success:function(rsp){
+                            rsp = document.getElementById('ps')
+                            document.write(rsp)
+                            $('#loader').html('');$('#btn').html('send suggestion')
+                            $('#comment').val('')
+                         },
+                         error:function(errormsg){
+                            $('#loader').html(''); $('btn').html('send suggestion')
+                            console.log(errormsg)
+                         }
+                        })
+            })
+        })
+    </script>
+{% endblock %}

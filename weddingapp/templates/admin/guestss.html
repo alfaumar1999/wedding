@@ -1,0 +1,29 @@
+{% extends 'admin/admin_panel.html'%}
+
+{% block contents %}
+<h2>Manage Gifts</h2>
+<div class="my-2 row">
+    <div class="col">
+<a href="/admin/add/gifts" class="btn btn-success">ADD GIFTS</a>
+</div>
+</div>
+
+<p>{{ guest }}</p>
+<table class="table table-striped"> 
+    <tr>
+        <th>S/N</th>
+        <th>Giftname</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tr>
+        {% for x in gifts%}
+        <td>{{loop.index}}</td>
+        <td>{{ x.gift_name }}</td>
+        <td><a href="{{url_for('edit',id=x.gift_id) }}">EDIT</a></td>
+        <td><a href="/admin/delete/{{x.gift_id}}" onclick="confirm('do you want to really delete this record?')">DELETE</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock contents %}

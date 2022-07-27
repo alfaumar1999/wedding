@@ -1,0 +1,14 @@
+{% extends 'admin/admin_panel.html'%}
+
+{% block contents %}
+<h2>Gifts</h2>
+
+<div class="row">
+    <div class="col">
+        <form action="/admin/add/gifts" method="post" class="form">
+        <input type="text" name="giftname" class="form-control"><br>
+        <button class="btn btn-primary btn-lg">ADD GIFT</button>
+    </div>
+</form>
+</div>
+{% endblock contents %}
